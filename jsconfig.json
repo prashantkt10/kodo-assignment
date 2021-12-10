@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "checkJs": true,
+        "paths": {
+            "@controllers/*": [
+                "./controllers/*"
+            ],
+            "@constants/*": [
+                "./constants/*"
+            ],
+            "@helpers/*": [
+                "./helpers/*"
+            ],
+            "@routes/*": [
+                "./routes/*"
+            ],
+            "@services/*": [
+                "./services/*"
+            ],
+            "@middleware/*": [
+                "./middleware/*"
+            ],
+            "@assignment/*": [
+                "./assignment/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
