@@ -1,5 +1,8 @@
+const NodeCache = require("node-cache");
 const { SORTING_KEYS, ORDER } = require("@constants/feed.config").FEED_API;
 const feedData = require("@assignment/prod-feed.json");
+
+const feedCache = new NodeCache();
 
 const searchByKeyword = ({ keyword, feedData }) => {
     let firstChar = keyword[0],
@@ -57,16 +60,28 @@ const getByPageAndLimit = ({ filteredFeed, page, limit }) => {
     return filteredFeed.splice(skip, limit);
 }
 
+const generateCacheKey = ({ keyword, sortBy, order, page, limit }) => {
+    return `k${keyword}&sortBy${sortBy}&order${order}&page${page}&limit${limit}`;
+}
+
+const prepareFeedForResponse = ({ feed, page, limit }) => {
+    return {
+        currentPage: page,
+        totalPages: Math.ceil(feed.length / limit),
+        currentFeedCount: feed.length,
+        feed: feed
+    };
+}
+
 const searchFeedBasedOnQuery = async ({ keyword, sortBy, order, page, limit }) => {
+    const feedKey = generateCacheKey({ keyword, sortBy, order, page, limit });
+    const cachedFeed = await feedCache.get(feedKey);
+    if (cachedFeed) return prepareFeedForResponse({ feed: cachedFeed, page, limit });
     let { filteredFeed } = searchByKeyword({ keyword, feedData });
     filteredFeed = sortFilteredFeed({ filteredFeed, sortBy, order });
     filteredFeed = getByPageAndLimit({ filteredFeed, page, limit });
-    return {
-        currentPage: page,
-        totalPages: Math.ceil(filteredFeed.length / limit),
-        currentFeedCount: filteredFeed.length,
-        feed: filteredFeed
-    };
+    feedCache.set(feedKey, filteredFeed, 60);
+    return prepareFeedForResponse({ feed: filteredFeed, page, limit })
 }
 
 module.exports = {
