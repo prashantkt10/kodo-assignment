@@ -11,10 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
     "http-status": "^1.5.0",
-    "module-alias": "^2.2.2"
+    "jest": "^27.4.4",
+    "module-alias": "^2.2.2",
+    "supertest": "^6.1.6"
   },
   "_moduleAliases": {
     "@constants": "./constants",

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const feed = require("@controllers/feed");
+const feed = require("@controllers/feed/feed");
 const { query } = require("express-validator");
 const { FEED_API } = require("@constants/feed.config");
 const { checkForErrors } = require("@middleware/requestValidator");
