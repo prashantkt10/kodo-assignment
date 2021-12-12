@@ -10,6 +10,7 @@ router.get("/search", [
         .isLength({ min: 2, max: 50 })
         .not()
         .isEmpty()
+        .trim()
         .withMessage("keyword is mandatory"),
     query("sortBy")
         .default(FEED_API.SORTING_KEYS.NAME)
